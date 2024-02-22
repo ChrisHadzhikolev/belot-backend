@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { DataService } from './data.service';
-import { DataController } from './data.controller';
+import { DataService } from './service/data.service';
+import { DataController } from './controller/data.controller';
 import { Game } from 'src/database/entities/game.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Round } from 'src/database/entities/round.entity';

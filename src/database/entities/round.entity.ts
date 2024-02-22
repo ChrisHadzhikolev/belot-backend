@@ -1,24 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+// round.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Game } from './game.entity';
 import { Combination } from './combination.entity';
 
 @Entity()
 export class Round {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    roundNumber: number;
+  @Column()
+  roundNumber: number;
 
-    @ManyToOne(() => Game, game => game.rounds)
-    game: Game;
+  @ManyToOne(() => Game, game => game.rounds)
+  game: Game;
 
-    @OneToMany(() => Combination, combination => combination.round)
-    combinations: Combination[];
+  @Column({ nullable: true })
+  result_team1: number;
 
-    @CreateDateColumn()
-    createdAt?: Date;
+  @Column({ nullable: true })
+  result_team2: number;
 
-    @UpdateDateColumn()
-    updatedAt?: Date;
+  @OneToMany(() => Combination, combination => combination.round)
+  combinations: Combination[];
+
+  @CreateDateColumn()
+  createdAt?: Date;
+  
+  @UpdateDateColumn()
+  updatedAt?: Date;
 }

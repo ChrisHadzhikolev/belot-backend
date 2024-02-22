@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDatumDto } from './dto/create-datum.dto';
-import { UpdateDatumDto } from './dto/update-datum.dto';
+import { CreateDatumDto } from '../dto/create-datum.dto';
+import { UpdateDatumDto } from '../dto/update-datum.dto';
 
 @Injectable()
 export class DataService {

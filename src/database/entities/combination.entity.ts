@@ -1,18 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, JoinTable, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+// combination.entity.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Player } from './player.entity';
 import { Game } from './game.entity';
-import { User } from './user.entity';
 import { Round } from './round.entity';
 
 @Entity()
 export class Combination {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   combination: string;
 
-  @ManyToOne(() => User, user => user.combinations)
-  player: User;
+  @ManyToOne(() => Player, player => player.combinations)
+  player: Player;
 
   @ManyToOne(() => Game, game => game.combinations)
   game: Game;
@@ -22,7 +23,7 @@ export class Combination {
 
   @CreateDateColumn()
   createdAt?: Date;
-
+  
   @UpdateDateColumn()
   updatedAt?: Date;
 }
