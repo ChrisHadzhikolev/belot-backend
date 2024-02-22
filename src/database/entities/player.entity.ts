@@ -11,6 +11,12 @@ export class Player {
   @Column()
   name: string;
 
+  @Column({default: 'user'})
+  role: string;
+
+  @Column({select: false})
+  password: string;
+
   @CreateDateColumn()
   createdAt?: Date;
   
