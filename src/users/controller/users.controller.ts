@@ -1,15 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters, UseInterceptors } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
+import { SecretDto } from '../dto/secret.dto';
+import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
+import { HttpResponseInterceptor } from 'src/interceptors/http-response.interceptor';
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { AllowAny } from 'src/auth/decorators/allow-any.decorator';
+import { AuthService } from 'src/auth/service/auth.service';
+import { UsernameDto } from '../dto/username.dto';
 
 @Controller('users')
+@UseFilters(new HttpExceptionFilter())
+@UseInterceptors(LoggingInterceptor)
+@UseInterceptors(HttpResponseInterceptor)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private authService: AuthService
+    ) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  @AllowAny()
+  @Post('signup')
+  register(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
+  }
+
+  @AllowAny()
+  @Post('signin')
+  login(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
+
+  @AllowAny()
+  @Post('secret')
+  checkSecret(@Body() secretDto: SecretDto) {
+    return process.env.SECRETCODE === secretDto.secretCode;
+  }
+
+  @AllowAny()
+  @Post('username')
+  async checkUsername(@Body() usernameDto: UsernameDto) {
+    if (await this.usersService.usernameCheck(usernameDto.username)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @Get()
