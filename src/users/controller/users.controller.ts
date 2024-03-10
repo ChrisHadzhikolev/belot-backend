@@ -28,8 +28,9 @@ export class UsersController {
 
   @AllowAny()
   @Post('signin')
-  login(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async login(@Body() createUserDto: CreateUserDto) {
+    const res = await this.usersService.login(createUserDto);
+    return res;
   }
 
   @AllowAny()

@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  generateJWT(user: IUser): Observable<string> {
+  generateJWT(user: any): Observable<string> {
     return from(
       this.jwtService.signAsync(
         { user },
