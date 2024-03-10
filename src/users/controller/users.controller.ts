@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseFilters, UseInterceptors, UseGuards } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -9,6 +9,9 @@ import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
 import { AllowAny } from 'src/auth/decorators/allow-any.decorator';
 import { AuthService } from 'src/auth/service/auth.service';
 import { UsernameDto } from '../dto/username.dto';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-guard';
+import { getUsername } from 'src/shared/user-id-decoder';
 
 @Controller('users')
 @UseFilters(new HttpExceptionFilter())
@@ -54,9 +57,10 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Get('current')
+  @UseGuards(JwtAuthGuard)
+  getCurrentUser(@CurrentUser() user) {
+    return getUsername(user);
   }
 
   @Patch(':id')
