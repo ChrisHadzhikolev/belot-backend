@@ -22,8 +22,8 @@ export class UsersController {
 
   @AllowAny()
   @Post('signup')
-  register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async register(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto);
   }
 
   @AllowAny()

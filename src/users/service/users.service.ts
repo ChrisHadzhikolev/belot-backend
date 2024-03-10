@@ -4,18 +4,23 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { Player } from 'src/database/entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { AuthService } from 'src/auth/service/auth.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Player)
     private playerRepository: Repository<Player>,
+    private authService: AuthService
 ) { }
   async usernameCheck(username: string) {
     return await this.playerRepository.findOne({where:{name: username}});
   }
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const user = createUserDto as Player;
+    user.password = await this.authService.hashPassword(createUserDto.password);
+    
+    return await this.playerRepository.save(user);
   }
 
   findAll() {
