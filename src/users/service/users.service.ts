@@ -42,8 +42,8 @@ export class UsersService {
     return await this.playerRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.playerRepository.find();
   }
 
   findOne(id: number) {
