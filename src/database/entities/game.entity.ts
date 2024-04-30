@@ -6,8 +6,8 @@ import { Round } from './round.entity';
 
 @Entity()
 export class Game {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn()
   createdAt?: Date;
@@ -15,16 +15,20 @@ export class Game {
   @UpdateDateColumn()
   updatedAt?: Date;
 
+  // can be inprogress, unfinished, finished
+  @Column({default: 'inprogress'})
+  status: string;
+
   @ManyToOne(() => Team, team => team.gamesAsTeam1)
   team1: Team;
 
   @ManyToOne(() => Team, team => team.gamesAsTeam2)
   team2: Team;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0 })
   result_team1: number;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: 0 })
   result_team2: number;
 
   @OneToMany(() => Combination, combination => combination.game)

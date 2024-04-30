@@ -6,8 +6,8 @@ import { Round } from './round.entity';
 
 @Entity()
 export class Combination {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   combination: string;

@@ -5,9 +5,9 @@ import { Combination } from './combination.entity';
 
 @Entity()
 export class Player {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  
   @Column()
   name: string;
 

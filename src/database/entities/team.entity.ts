@@ -5,9 +5,9 @@ import { Game } from './game.entity';
 
 @Entity()
 export class Team {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  
   @Column()
   name: string;
 
